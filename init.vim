@@ -5,6 +5,7 @@ set number
 set backspace=indent,eol,start
 set encoding=utf-8
 set smartcase
+inoremap <c-c> <ESC>
 command Ninja ninja
 
 "--------syntax setup--------"
@@ -46,28 +47,33 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'scrooloose/nerdTree'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
-Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-jedi'
 call plug#end()
 
+"--LanguageClient-neovim-"
 let g:LanguageClient_serverCommands = {
   \ 'cpp': ['clangd'],
   \ 'python' : ['pyls'],
   \ }
+nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
 
-"-----------deoplete---------"
-"selection in dropdown using j and k keys
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-"enable at startup"
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path="/usr/lib/llvm-7/lib/libclang.so.1"
-let g:deoplete#sources#clang#clang_header="/usr/lib/llvm-7/lib/clang/7.0.1/include"
+"-----------ncm2---------"
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+let g:ncm2_pyclang#library_path = '/usr/lib/llvm-6.0/lib'
+set shortmess+=c
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 "-----------nerdtree---------"
 let NERDTreeIgnore = ['\.pyc$', '\.egg-info$', '__pycache__', '__pycache__']

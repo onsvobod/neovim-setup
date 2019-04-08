@@ -4,10 +4,11 @@ apt-get update
 
 apt-get install python-dev python-pip python3-dev python3-pip
 
+sudo pip2 install wheel setuptools
+sudo pip3 install wheel setuptools
+
 # debian neovim and python plugins install
 apt-get install neovim
-echo "deb http://deb.debian.org/debian unstable main" >> /etc/apt/sources.list
-apt-get update
 
 # ubuntu neovim and python plugins install
 #apt-get install software-properties-common
@@ -15,15 +16,15 @@ apt-get update
 #apt-get update
 #apt-get install neovim
 
-pip2 install --user --upgrade pynvim
-pip3 install --user --upgrade pynvim
+pip2 install --upgrade pynvim
+pip3 install --upgrade pynvim
 
 mkdir -p ~/.config/nvim
 cp init.vim ~/.config/nvim
 
 #clangd install
-apt-get install clang-tools-7
-update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-7 100
+apt-get install  -t stretch-backports clang-tools-6.0
+update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-6 100
 
 #python language server
 pip install python-language-server
