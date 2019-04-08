@@ -44,9 +44,9 @@ set foldnestmax=1
 "-----------plugins----------"
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+            \ 'branch': 'next',
+            \ 'do': 'bash install.sh',
+            \ }
 Plug 'scrooloose/nerdTree'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -57,6 +57,7 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-jedi'
+Plug 'vim-scripts/a.vim'
 call plug#end()
 
 "--LanguageClient-neovim-"
