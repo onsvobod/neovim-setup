@@ -30,6 +30,10 @@ highlight LineNr ctermbg=black
 set list
 set listchars=tab:>-
 
+tnoremap <Esc> <C-\><C-n>
+tnoremap <M-[> <Esc>
+tnoremap <C-v><Esc> <Esc>
+
 "---parenthesis completion---"
 inoremap {      {}<Left>
 inoremap {<CR>  {<CR>}<Esc>O
