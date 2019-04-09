@@ -1,8 +1,8 @@
 #!/bin/bash
 
-apt-get update
+sudo apt-get update
 
-apt-get install python-dev python-pip python3-dev python3-pip
+sudo apt-get install python-dev python-pip python3-dev python3-pip
 
 sudo pip2 install wheel setuptools
 sudo pip3 install wheel setuptools
@@ -23,8 +23,8 @@ pip3 install --upgrade pynvim
 #cp init.vim ~/.config/nvim
 
 #clangd install
-apt-get install  -t stretch-backports clang-tools-6.0
-update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-6.0 100
+sudo apt-get install  -t stretch-backports clang-tools-6.0
+sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-6.0 100
 
 #python language server
 pip install python-language-server
@@ -35,4 +35,7 @@ pip3 install 'python-language-server[all]'
 #plugin manager install
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-apt-get install ack-grep
+sudo apt-get install ack-grep
+
+echo function-rgx=[a-z_][a-z0-9_]{2,50}$ >> ~/.config/pylintrc
+echo variable-rgx=[a-z_][a-z0-9_]{2,50}$ >> ~/.config/pylintrc
