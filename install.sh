@@ -37,5 +37,4 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 
 sudo apt-get install ack-grep
 
-echo function-rgx=[a-z_][a-z0-9_]{2,50}$ >> ~/.config/pylintrc
-echo variable-rgx=[a-z_][a-z0-9_]{2,50}$ >> ~/.config/pylintrc
+cp pylintrc ~/.config
