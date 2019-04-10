@@ -4,6 +4,7 @@ set secure
 set number
 set backspace=indent,eol,start
 set encoding=utf-8
+set ignorecase
 set smartcase
 inoremap <c-c> <ESC>
 command Ninja ninja
