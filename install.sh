@@ -27,11 +27,8 @@ sudo apt-get install  -t stretch-backports clang-tools-6.0
 sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-6.0 100
 
 #python language server
-pip install jedi
 pip3 install jedi
-pip install python-language-server
 pip3 install python-language-server
-pip install 'python-language-server[all]'
 pip3 install 'python-language-server[all]'
 
 #plugin manager install
