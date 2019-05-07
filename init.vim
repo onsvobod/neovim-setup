@@ -8,6 +8,8 @@ set ignorecase
 set smartcase
 inoremap <c-c> <ESC>
 command Ninja ninja
+map <c-t>h :tabp<CR>
+map <c-t>l :tabn<CR>
 
 "--------syntax setup--------"
 syntax on
