@@ -35,3 +35,7 @@ pip3 install 'python-language-server[all]'
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 sudo apt-get install ack-grep
+
+sudo apt-get install nodejs
+
+sudo npm install -g javascript-typescript-langserver

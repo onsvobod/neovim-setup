@@ -73,8 +73,10 @@ call plug#end()
 let g:LanguageClient_serverCommands = {
   \ 'cpp': ['clangd'],
   \ 'python' : ['pyls'],
+  \ 'javascript' : ['javascript-typescript-stdio'],
   \ }
 nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
+let g:LanguageClient_autoStart = 1
 
 "-----------ncm2---------"
 autocmd BufEnter * call ncm2#enable_for_buffer()
