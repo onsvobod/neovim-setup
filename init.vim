@@ -132,4 +132,6 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 "--------grepper--------"
 let g:grepper = {}
 let g:grepper.tools = ['ack', 'grep']
+let g:grepper.quickfix = 0
+let g:grepper.highlight = 1
 nnoremap <c-G> :Grepper -tool ack -cword -noprompt<cr>
