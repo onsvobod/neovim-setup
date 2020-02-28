@@ -17,7 +17,7 @@ set hlsearch
 set ruler
 filetype plugin indent on
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
-colorscheme desert
+colorscheme slate
 set background=dark
 hi Normal ctermbg=none
 highlight NonText ctermbg=none
