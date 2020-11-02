@@ -48,6 +48,17 @@ set foldmethod=indent
 set foldlevel=0
 set foldnestmax=1
 
+"-----new tab change cwd------"
+function! OnTabEnter(path)
+  if isdirectory(a:path)
+    let dirname = a:path
+  else
+    let dirname = fnamemodify(a:path, ":h")
+  endif
+  execute "tcd ". dirname
+endfunction()
+autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
+
 "-----------plugins----------"
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'autozimu/LanguageClient-neovim', {
@@ -90,6 +101,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "-----------nerdtree---------"
 let NERDTreeIgnore = ['\.pyc$', '\.egg-info$', '__pycache__', '__pycache__']
 map <C-n> :NERDTreeToggle<CR>
+" make new tab new cwd work
+let g:NERDTreeHijackNetrw = 0
 
 "---------Async---------"
 :noremap <F7> :AsyncRun -program=make<cr>
