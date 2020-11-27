@@ -78,6 +78,7 @@ Plug 'vim-scripts/a.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'
+Plug 'chrisbra/csv.vim'
 call plug#end()
 
 "--LanguageClient-neovim-"
@@ -150,3 +151,11 @@ let g:grepper.highlight = 1
 runtime plugin/grepper.vim
 let g:grepper.grep.grepprg .= ' -is --exclude-dir=out_linux'
 nnoremap <c-G> :Grepper -tool grep -cword -noprompt<cr>
+
+"----------csv----------"
+let b:csv_arrange_align='c*'
+aug CSV_Editing
+    au!
+    au BufRead,BufWritePost *.csv :%ArrangeColumn
+    au BufWritePre *.csv :%UnArrangeColumn
+aug end
