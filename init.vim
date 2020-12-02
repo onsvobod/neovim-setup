@@ -153,9 +153,10 @@ let g:grepper.grep.grepprg .= ' -is --exclude-dir=out_linux'
 nnoremap <c-G> :Grepper -tool grep -cword -noprompt<cr>
 
 "----------csv----------"
-let b:csv_arrange_align='c*'
+let b:csv_arrange_align='l*'
 aug CSV_Editing
     au!
     au BufRead,BufWritePost *.csv :%ArrangeColumn
     au BufWritePre *.csv :%UnArrangeColumn
 aug end
+let g:csv_delim_test = ',;|'
