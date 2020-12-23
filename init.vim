@@ -79,6 +79,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'
 Plug 'chrisbra/csv.vim'
+Plug 'cdelledonne/vim-cmake'
 call plug#end()
 
 "--LanguageClient-neovim-"
