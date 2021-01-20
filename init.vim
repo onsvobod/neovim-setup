@@ -80,6 +80,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'
 Plug 'chrisbra/csv.vim'
 Plug 'cdelledonne/vim-cmake'
+Plug 'dart-lang/dart-vim-plugin', { 'for': [ 'dart' ] }
 call plug#end()
 
 "--LanguageClient-neovim-"
@@ -87,6 +88,7 @@ let g:LanguageClient_serverCommands = {
   \ 'cpp': ['clangd'],
   \ 'python' : ['pyls'],
   \ 'javascript' : ['javascript-typescript-stdio'],
+  \ 'dart' : ['dart', '/usr/lib/dart/bin/snapshots/analysis_server.dart.snapshot', '--lsp'],
   \ }
 nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
 let g:LanguageClient_autoStart = 1
@@ -154,7 +156,7 @@ let g:grepper.grep.grepprg .= ' -is --exclude-dir=out_linux'
 nnoremap <c-G> :Grepper -tool grep -cword -noprompt<cr>
 
 "----------csv----------"
-let b:csv_arrange_align='l*'
+let b:csv_arrange_align='c*'
 aug CSV_Editing
     au!
     au BufRead,BufWritePost *.csv :%ArrangeColumn
