@@ -6,6 +6,7 @@ set backspace=indent,eol,start
 set encoding=utf-8
 set ignorecase
 set smartcase
+let mapleader=","
 inoremap <c-c> <ESC>
 command Ninja ninja
 map <c-t>h :tabp<CR>
@@ -80,6 +81,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'
 Plug 'chrisbra/csv.vim'
 Plug 'cdelledonne/vim-cmake'
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 call plug#end()
 
 "--LanguageClient-neovim-"
@@ -161,3 +163,20 @@ aug CSV_Editing
     au BufWritePre *.csv :%UnArrangeColumn
 aug end
 let g:csv_delim_test = ',;|'
+
+"----------gdb----------"
+" We're going to define single-letter keymaps, so don't try to define them
+" in the terminal window.  The debugger CLI should continue accepting text commands.
+function! NvimGdbNoTKeymaps()
+  tnoremap <silent> <buffer> <esc> <c-\><c-n>
+endfunction
+
+let g:nvimgdb_config_override = {
+  \ 'key_next': 'n',
+  \ 'key_step': 's',
+  \ 'key_finish': 'f',
+  \ 'key_continue': 'c',
+  \ 'key_until': 'u',
+  \ 'key_breakpoint': 'b',
+  \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
+  \ }
