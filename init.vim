@@ -171,12 +171,14 @@ function! NvimGdbNoTKeymaps()
   tnoremap <silent> <buffer> <esc> <c-\><c-n>
 endfunction
 
+:noremap <F8> :GdbStart gdb -q 
+
 let g:nvimgdb_config_override = {
   \ 'key_next': 'n',
   \ 'key_step': 's',
   \ 'key_finish': 'f',
   \ 'key_continue': 'c',
-  \ 'key_until': 'u',
   \ 'key_breakpoint': 'b',
+  \ 'key_eval': 'e',
   \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
   \ }
