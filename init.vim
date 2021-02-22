@@ -7,6 +7,7 @@ set encoding=utf-8
 set ignorecase
 set smartcase
 let mapleader=","
+set mouse=a
 inoremap <c-c> <ESC>
 command Ninja ninja
 map <c-t>h :tabp<CR>
