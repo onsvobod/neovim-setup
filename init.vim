@@ -83,6 +83,7 @@ Plug 'mhinz/vim-grepper'
 Plug 'chrisbra/csv.vim'
 Plug 'cdelledonne/vim-cmake'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 "--LanguageClient-neovim-"
@@ -90,9 +91,12 @@ let g:LanguageClient_serverCommands = {
   \ 'cpp': ['clangd'],
   \ 'python' : ['pyls'],
   \ 'javascript' : ['javascript-typescript-stdio'],
+  \ 'go': ['gopls'],
   \ }
 nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
 let g:LanguageClient_autoStart = 1
+" Run gofmt on save
+autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 
 "-----------ncm2---------"
 autocmd BufEnter * call ncm2#enable_for_buffer()
