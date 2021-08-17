@@ -23,14 +23,15 @@ colorscheme slate
 set background=dark
 hi Normal ctermbg=none
 highlight NonText ctermbg=none
-autocmd BufRead,BufNewFile *.py setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.cc setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.cpp setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.c setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.h setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.js setlocal colorcolumn=80
+autocmd BufRead,BufNewFile *.py setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.cc setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.cpp setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.c setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.h setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.js setlocal colorcolumn=120
 highlight ColorColumn ctermbg=darkgrey guifg=darkgrey
 highlight LineNr ctermbg=black
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 set list
 set listchars=tab:>-
@@ -84,6 +85,7 @@ Plug 'chrisbra/csv.vim'
 Plug 'cdelledonne/vim-cmake'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'Yggdroot/indentLine'
 call plug#end()
 
 "--LanguageClient-neovim-"
@@ -101,7 +103,7 @@ autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 "-----------ncm2---------"
 autocmd BufEnter * call ncm2#enable_for_buffer()
 set completeopt=noinsert,menuone,noselect
-let g:ncm2_pyclang#library_path = '/usr/lib/llvm-6.0/lib'
+let g:ncm2_pyclang#library_path = '/usr/lib/llvm-13/lib'
 set shortmess+=c
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -187,3 +189,8 @@ let g:nvimgdb_config_override = {
   \ 'key_eval': 'e',
   \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
   \ }
+
+
+"---------indent---------"
+let g:indentLine_bufNameExclude = ['NERD_tree.*']
+let g:indentLine_char = '|'
