@@ -183,7 +183,7 @@ function! NvimGdbNoTKeymaps()
   tnoremap <silent> <buffer> <esc> <c-\><c-n>
 endfunction
 
-:noremap <F8> :GdbStart gdb -q
+:noremap <F8> :GdbStart gdb -q 
 
 let g:nvimgdb_config_override = {
   \ 'key_next': 'n',
