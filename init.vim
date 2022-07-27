@@ -6,6 +6,8 @@ set backspace=indent,eol,start
 set encoding=utf-8
 set ignorecase
 set smartcase
+let mapleader=","
+set mouse=a
 inoremap <c-c> <ESC>
 command Ninja ninja
 map <c-t>h :tabp<CR>
@@ -21,17 +23,20 @@ colorscheme slate
 set background=dark
 hi Normal ctermbg=none
 highlight NonText ctermbg=none
-autocmd BufRead,BufNewFile *.py setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.cc setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.cpp setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.c setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.h setlocal colorcolumn=80
-autocmd BufRead,BufNewFile *.js setlocal colorcolumn=80
+autocmd BufRead,BufNewFile *.py setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.cc setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.cpp setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.c setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.h setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.js setlocal colorcolumn=120
 highlight ColorColumn ctermbg=darkgrey guifg=darkgrey
 highlight LineNr ctermbg=black
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType go setlocal noet ts=4 sw=4 sts=4
 
 set list
 set listchars=tab:>-
+autocmd FileType go set nolist
 
 tnoremap <Esc> <C-\><C-n>
 tnoremap <M-[> <Esc>
@@ -57,7 +62,7 @@ function! OnTabEnter(path)
   endif
   execute "tcd ". dirname
 endfunction()
-autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
+autocmd TabNew * call OnTabEnter(expand("<amatch>"))
 
 "-----------plugins----------"
 call plug#begin('~/.local/share/nvim/plugged')
@@ -78,6 +83,13 @@ Plug 'vim-scripts/a.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'
+Plug 'chrisbra/csv.vim'
+Plug 'cdelledonne/vim-cmake'
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'Yggdroot/indentLine'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim'
 call plug#end()
 
 "--LanguageClient-neovim-"
@@ -85,14 +97,18 @@ let g:LanguageClient_serverCommands = {
   \ 'cpp': ['clangd'],
   \ 'python' : ['pyls'],
   \ 'javascript' : ['javascript-typescript-stdio'],
+  \ 'go': ['gopls'],
   \ }
 nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
+nnoremap <C-l> :call LanguageClient#textDocument_references()<CR>
 let g:LanguageClient_autoStart = 1
+" Run gofmt on save
+autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 
 "-----------ncm2---------"
 autocmd BufEnter * call ncm2#enable_for_buffer()
 set completeopt=noinsert,menuone,noselect
-let g:ncm2_pyclang#library_path = '/usr/lib/llvm-6.0/lib'
+let g:ncm2_pyclang#library_path = '/usr/lib/llvm-13/lib'
 set shortmess+=c
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -150,3 +166,36 @@ let g:grepper.highlight = 1
 runtime plugin/grepper.vim
 let g:grepper.grep.grepprg .= ' -is --exclude-dir=out_linux'
 nnoremap <c-G> :Grepper -tool grep -cword -noprompt<cr>
+
+"----------csv----------"
+let b:csv_arrange_align='l*'
+aug CSV_Editing
+    au!
+    au BufRead,BufWritePost *.csv :%ArrangeColumn
+    au BufWritePre *.csv :%UnArrangeColumn
+aug end
+let g:csv_delim_test = ',;|'
+
+"----------gdb----------"
+" We're going to define single-letter keymaps, so don't try to define them
+" in the terminal window.  The debugger CLI should continue accepting text commands.
+function! NvimGdbNoTKeymaps()
+  tnoremap <silent> <buffer> <esc> <c-\><c-n>
+endfunction
+
+:noremap <F8> :GdbStart gdb -q
+
+let g:nvimgdb_config_override = {
+  \ 'key_next': 'n',
+  \ 'key_step': 's',
+  \ 'key_finish': 'f',
+  \ 'key_continue': 'c',
+  \ 'key_breakpoint': 'b',
+  \ 'key_eval': 'e',
+  \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
+  \ }
+
+
+"---------indent---------"
+let g:indentLine_bufNameExclude = ['NERD_tree.*']
+let g:indentLine_char = '|'
