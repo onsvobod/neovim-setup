@@ -29,6 +29,7 @@ autocmd BufRead,BufNewFile *.cpp setlocal colorcolumn=120
 autocmd BufRead,BufNewFile *.c setlocal colorcolumn=120
 autocmd BufRead,BufNewFile *.h setlocal colorcolumn=120
 autocmd BufRead,BufNewFile *.js setlocal colorcolumn=120
+autocmd BufRead,BufNewFile *.go setlocal colorcolumn=120
 highlight ColorColumn ctermbg=darkgrey guifg=darkgrey
 highlight LineNr ctermbg=black
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
@@ -87,9 +88,9 @@ Plug 'chrisbra/csv.vim'
 Plug 'cdelledonne/vim-cmake'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'Yggdroot/indentLine'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'sindrets/diffview.nvim'
+Plug 'gcmt/taboo.vim'
 call plug#end()
 
 "--LanguageClient-neovim-"
