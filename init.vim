@@ -1,58 +1,130 @@
-"--------general setup-------"
-set exrc
-set secure
-set number
-set backspace=indent,eol,start
-set encoding=utf-8
-set ignorecase
-set smartcase
-let mapleader=","
-set mouse=a
-inoremap <c-c> <ESC>
-command Ninja ninja
-map <c-t>h :tabp<CR>
-map <c-t>l :tabn<CR>
+"-----------plugins----------"
+call plug#begin('~/.local/share/nvim/plugged')
+" Colors
+Plug 'morhetz/gruvbox'
+" Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" File explorer
+Plug 'scrooloose/nerdTree'
+" Status line
+Plug 'bling/vim-airline'
+" Tabs
+Plug 'gcmt/taboo.vim'
+" Indent line
+Plug 'lukas-reineke/indent-blankline.nvim'
+" Parentesis completion
+Plug 'jiangmiao/auto-pairs'
+" Search
+Plug 'mhinz/vim-grepper'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+" Code check
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+" Completion
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-jedi'
+" Needed by ncm2
+Plug 'roxma/nvim-yarp'
+" .cc <--> .h
+Plug 'vim-scripts/a.vim'
+" Build
+Plug 'cdelledonne/vim-cmake'
+Plug 'skywind3000/asyncrun.vim'
+" Debugger
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+" Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Git diff
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim', {'branch': 'main'}
+call plug#end()
 
-"--------syntax setup--------"
-syntax on
-set hlsearch
-set ruler
+"-----------general----------"
+" Cannot use shell commands in autocmd in .vimrc
+set secure
+" Allow backspacing over everything in insert mode
+set backspace=indent,eol,start 
+" Encoding
+set encoding=utf-8
+" Ignore case of letters
+set ignorecase
+" Ignore case of letters in patterns with only lowercase letters
+set smartcase
+" Enable mouse support in all modes
+set mouse=a
+" Detects filetype
 filetype plugin indent on
+" Tab setup - use 4 spaces
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
-colorscheme slate
-set background=dark
-hi Normal ctermbg=none
-highlight NonText ctermbg=none
+" Hightlight tabs
+set list
+set listchars=tab:>-
+
+"-----------visual-----------"
+" Select gruvbox as colorscheme
+autocmd vimenter * ++nested colorscheme gruvbox
+" Show linenumbers
+set number
+" Show line and column number on cursor position
+set ruler
+" Highlight matches in search
+set hlsearch
+" Folding - using treesitter
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable 
+" Show indentline
+let g:indentLine_bufNameExclude = ['NERD_tree.*']
+let g:indentLine_char = '|'
+
+"-----------filetype-----------"
+" Python
 autocmd BufRead,BufNewFile *.py setlocal colorcolumn=120
+" C/C++
 autocmd BufRead,BufNewFile *.cc setlocal colorcolumn=120
 autocmd BufRead,BufNewFile *.cpp setlocal colorcolumn=120
 autocmd BufRead,BufNewFile *.c setlocal colorcolumn=120
 autocmd BufRead,BufNewFile *.h setlocal colorcolumn=120
+" Javascritp
 autocmd BufRead,BufNewFile *.js setlocal colorcolumn=120
+" Golang - use tabs instead of spaces
 autocmd BufRead,BufNewFile *.go setlocal colorcolumn=120
-highlight ColorColumn ctermbg=darkgrey guifg=darkgrey
-highlight LineNr ctermbg=black
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-autocmd FileType go setlocal noet ts=4 sw=4 sts=4
-
-set list
-set listchars=tab:>-
+autocmd FileType go setlocal softtabstop=4 noexpandtab
 autocmd FileType go set nolist
+" Yaml
+autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
+"-----------keybinds-----------"
+" Set <leader>
+let mapleader=","
+" Ctrl-c -> Esc
+inoremap <c-c> <ESC>
+" Ctrl-t + h -> move tab left
+map <c-t>h :tabp<Enter>
+" Ctrl-t + l -> move tab right
+map <c-t>l :tabn<Enter>
+" Esc -> escape :terminal
 tnoremap <Esc> <C-\><C-n>
-tnoremap <M-[> <Esc>
-tnoremap <C-v><Esc> <Esc>
-
-"---parenthesis completion---"
-inoremap {      {}<Left>
-inoremap {<CR>  {<CR>}<Esc>O
-inoremap {{     {
-inoremap {}     {}
-
-"------function folding------"
-set foldmethod=indent
-set foldlevel=0
-set foldnestmax=1
+" Ctrl-k -> GoTo definition
+nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
+" Ctrl-l -> GoTo reference
+nnoremap <C-l> :call LanguageClient#textDocument_references()<CR>
+" Enter -> Select completion
+inoremap <expr> <Enter> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" Tab -> Next completion
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" Shift-Tab -> Previous completion
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Ctrl-n -> Open NerdTree
+map <C-n> :NERDTreeToggle<CR>
+" F7 -> Run makeprg
+noremap <F7> :AsyncRun -program=make<Enter>
+" Run Grepper on word under cursor
+nnoremap <c-G> :Grepper -tool grep -cword -noprompt<Enter>
+" Start gdb
+noremap <F8> :GdbStart gdb -q<Enter>
 
 "-----new tab change cwd------"
 function! OnTabEnter(path)
@@ -65,33 +137,31 @@ function! OnTabEnter(path)
 endfunction()
 autocmd TabNew * call OnTabEnter(expand("<amatch>"))
 
-"-----------plugins----------"
-call plug#begin('~/.local/share/nvim/plugged')
-Plug 'autozimu/LanguageClient-neovim', {
-            \ 'branch': 'next',
-            \ 'do': 'bash install.sh',
-            \ }
-Plug 'scrooloose/nerdTree'
-Plug 'tpope/vim-surround'
-Plug 'bling/vim-airline'
-Plug 'skywind3000/asyncrun.vim'
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-jedi'
-Plug 'vim-scripts/a.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'mhinz/vim-grepper'
-Plug 'chrisbra/csv.vim'
-Plug 'cdelledonne/vim-cmake'
-Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'nvim-lua/plenary.nvim'
-Plug 'sindrets/diffview.nvim'
-Plug 'gcmt/taboo.vim'
-call plug#end()
+"-----------treesitter----------"
+lua <<EOF
+require('nvim-treesitter.configs').setup {
+  ensure_installed = "all",
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+    -- Dont use together with :syntax on
+    additional_vim_regex_highlighting = false,
+  },
+  --indent = {
+  --  enable = true
+  --},
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<Enter>",
+      node_incremental = "<Enter>",
+      scope_incremental = "<TAB>",
+      node_decremental = "<S-TAB>",
+    },
+  },
+}
+EOF
 
 "--LanguageClient-neovim-"
 let g:LanguageClient_serverCommands = {
@@ -100,31 +170,21 @@ let g:LanguageClient_serverCommands = {
   \ 'javascript' : ['javascript-typescript-stdio'],
   \ 'go': ['gopls'],
   \ }
-nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
-nnoremap <C-l> :call LanguageClient#textDocument_references()<CR>
 let g:LanguageClient_autoStart = 1
-" Run gofmt on save
-autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 
 "-----------ncm2---------"
 autocmd BufEnter * call ncm2#enable_for_buffer()
 set completeopt=noinsert,menuone,noselect
 let g:ncm2_pyclang#library_path = '/usr/lib/llvm-13/lib'
 set shortmess+=c
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 "-----------nerdtree---------"
 let NERDTreeIgnore = ['\.pyc$', '\.egg-info$', '__pycache__', '__pycache__']
-map <C-n> :NERDTreeToggle<CR>
 " make new tab new cwd work
 let g:NERDTreeHijackNetrw = 0
 
 "---------Async---------"
-:noremap <F7> :AsyncRun -program=make<cr>
 let g:asyncrun_open = 10
-
 
 "----------fzf----------"
 " This is the default extra key bindings
@@ -132,11 +192,9 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
-
 " Default fzf layout
 " - down / up / left / right
 let g:fzf_layout = { 'down': '~30%' }
-
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -152,7 +210,6 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
-
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
 " previous-history instead of down and up. If you don't like the change,
@@ -166,16 +223,6 @@ let g:grepper.quickfix = 0
 let g:grepper.highlight = 1
 runtime plugin/grepper.vim
 let g:grepper.grep.grepprg .= ' -is --exclude-dir=out_linux'
-nnoremap <c-G> :Grepper -tool grep -cword -noprompt<cr>
-
-"----------csv----------"
-let b:csv_arrange_align='l*'
-aug CSV_Editing
-    au!
-    au BufRead,BufWritePost *.csv :%ArrangeColumn
-    au BufWritePre *.csv :%UnArrangeColumn
-aug end
-let g:csv_delim_test = ',;|'
 
 "----------gdb----------"
 " We're going to define single-letter keymaps, so don't try to define them
@@ -183,9 +230,6 @@ let g:csv_delim_test = ',;|'
 function! NvimGdbNoTKeymaps()
   tnoremap <silent> <buffer> <esc> <c-\><c-n>
 endfunction
-
-:noremap <F8> :GdbStart gdb -q
-
 let g:nvimgdb_config_override = {
   \ 'key_next': 'n',
   \ 'key_step': 's',
@@ -195,8 +239,3 @@ let g:nvimgdb_config_override = {
   \ 'key_eval': 'e',
   \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
   \ }
-
-
-"---------indent---------"
-let g:indentLine_bufNameExclude = ['NERD_tree.*']
-let g:indentLine_char = '|'
