@@ -58,9 +58,6 @@ set mouse=a
 filetype plugin indent on
 " Tab setup - use 4 spaces
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
-" Hightlight tabs
-set list
-set listchars=tab:>-
 
 "-----------visual-----------"
 " Select gruvbox as colorscheme
@@ -78,6 +75,9 @@ set nofoldenable
 " Show indentline
 let g:indentLine_bufNameExclude = ['NERD_tree.*']
 let g:indentLine_char = '|'
+" Hightlight tabs
+set list
+set listchars=tab:>-
 
 "-----------filetype-----------"
 " Python
@@ -108,9 +108,9 @@ map <c-t>l :tabn<Enter>
 " Esc -> escape :terminal
 tnoremap <Esc> <C-\><C-n>
 " Ctrl-k -> GoTo definition
-nnoremap <C-k> :call LanguageClient#textDocument_definition()<CR>
+nnoremap <C-k> :call LanguageClient#textDocument_definition()<Enter>
 " Ctrl-l -> GoTo reference
-nnoremap <C-l> :call LanguageClient#textDocument_references()<CR>
+nnoremap <C-l> :call LanguageClient#textDocument_references()<Enter>
 " Enter -> Select completion
 inoremap <expr> <Enter> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 " Tab -> Next completion
