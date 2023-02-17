@@ -68,6 +68,8 @@ set number
 set ruler
 " Highlight matches in search
 set hlsearch
+" 24bit color
+set termguicolors
 " Folding - using treesitter
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
