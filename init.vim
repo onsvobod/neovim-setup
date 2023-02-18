@@ -1,7 +1,7 @@
 "-----------plugins----------"
 call plug#begin('~/.local/share/nvim/plugged')
 " Colors
-Plug 'morhetz/gruvbox'
+Plug 'Tworg/gruvbox'
 " Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " File explorer
