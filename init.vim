@@ -143,6 +143,8 @@ autocmd TabNew * call OnTabEnter(expand("<amatch>"))
 lua <<EOF
 require('nvim-treesitter.configs').setup {
   ensure_installed = "all",
+  -- Does not compile
+  ignore_install = { "smali" },
   sync_install = false,
   auto_install = true,
   highlight = {
