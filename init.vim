@@ -97,6 +97,9 @@ autocmd FileType go setlocal softtabstop=4 noexpandtab
 autocmd FileType go set nolist
 " Yaml
 autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType yml setlocal tabstop=2 softtabstop=2 shiftwidth=2
+" Json
+autocmd FileType json setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 "-----------keybinds-----------"
 " Set <leader>
