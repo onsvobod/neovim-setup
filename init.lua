@@ -121,7 +121,7 @@ map('t', '<Esc>', "<C-\\><C-n>")                                            -- E
 map('n', '<C-k>', ':call LanguageClient#textDocument_definition()<Enter>')  -- Ctrl-k -> GoTo definition
 map('n', '<C-l>', ':call LanguageClient#textDocument_references()<Enter>')  -- Ctrl-l -> GoTo reference
 map('n', '<F7>', ':AsyncRun -program=make<Enter>')                          -- F7 -> Run makeprg
-map('', '<C-n>', ':NERDTreeToggle<CR>')                                   -- Ctrl-n -> Open NerdTree
+map('', '<C-n>', ':NERDTreeToggle<CR>')                                     -- Ctrl-n -> Open NerdTree
 map('n', '<c-G>', ':Grepper -tool grep -cword -noprompt<Enter>')            -- Ctrl-g -> Run Grepper on word under cursor
 map('n', '<F8>', ':GdbStart gdb -q<Enter>')                                 -- F8 -> Start gdb
 -- Enter -> Select completion
