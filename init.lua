@@ -128,5 +128,5 @@ map('n', '<F8>', ':GdbStart gdb -q<Enter>')                                 -- F
 map('i', '<Enter>', 'pumvisible() ? "\\<c-y>\\<cr>" : "\\<CR>"', {expr = true})
 -- Tab -> Next completion
 map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})
--- " Shift-Tab -> Previous completion
+-- Shift-Tab -> Previous completion
 map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', {expr = true})
