@@ -21,8 +21,13 @@ local Plug = vim.fn['plug#']
 
 vim.call('plug#begin')
 
-Plug('Tworg/gruvbox')   -- Colorscheme
+Plug('Tworg/gruvbox')                                           -- Colorscheme
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- Smart indentation, highlight, folding...
+Plug('neovim/nvim-lspconfig')                                   -- LSP client configurations
+Plug('hrsh7th/nvim-cmp')                                        -- Autocompletion
+Plug('hrsh7th/cmp-nvim-lsp')                                    -- Use better autocompletion capabilities from LSP, when using nvim-cmp
+Plug('saadparwaiz1/cmp_luasnip')                                -- Snippet source for nvim-cmp
+Plug('L3MON4D3/LuaSnip')                                        -- Snippet engine
 
 vim.call('plug#end')
 
@@ -118,15 +123,71 @@ map('i', '<c-c>', '<ESC>')                                                  -- C
 map('', '<c-t>h', ':tabp<Enter>')                                           -- Ctrl-t + h -> move tab left
 map('', '<c-t>l', ':tabn<Enter>')                                           -- Ctrl-t + l -> move tab right
 map('t', '<Esc>', "<C-\\><C-n>")                                            -- Esc -> escape :terminal
-map('n', '<C-k>', ':call LanguageClient#textDocument_definition()<Enter>')  -- Ctrl-k -> GoTo definition
-map('n', '<C-l>', ':call LanguageClient#textDocument_references()<Enter>')  -- Ctrl-l -> GoTo reference
 map('n', '<F7>', ':AsyncRun -program=make<Enter>')                          -- F7 -> Run makeprg
 map('', '<C-n>', ':NERDTreeToggle<CR>')                                     -- Ctrl-n -> Open NerdTree
 map('n', '<c-G>', ':Grepper -tool grep -cword -noprompt<Enter>')            -- Ctrl-g -> Run Grepper on word under cursor
 map('n', '<F8>', ':GdbStart gdb -q<Enter>')                                 -- F8 -> Start gdb
--- Enter -> Select completion
-map('i', '<Enter>', 'pumvisible() ? "\\<c-y>\\<cr>" : "\\<CR>"', {expr = true})
--- Tab -> Next completion
-map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})
--- Shift-Tab -> Previous completion
-map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', {expr = true})
+
+-------------------------------------------------------------------------------
+------------------------------------ LSP --------------------------------------
+-------------------------------------------------------------------------------
+
+-- Add additional capabilities supported by nvim-cmp
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local lspconfig = require('lspconfig')
+local servers = {'clangd', 'gopls', 'bashls', 'cmake', 'dockerls', 'jsonls', 'pyright', 'yamlls'}
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup {
+        -- nvim-cmp capabilities
+        capabilities = capabilities,
+    }
+end
+
+map('n', '<space>e', vim.diagnostic.open_float)
+map('n', '[d', vim.diagnostic.goto_prev)
+map('n', ']d', vim.diagnostic.goto_next)
+map('n', '<space>q', vim.diagnostic.setloclist)
+
+-------------------------------------------------------------------------------
+------------------------------- Autocomplete ----------------------------------
+-------------------------------------------------------------------------------
+local cmp = require 'cmp'
+-- Snippets setup
+local luasnip = require 'luasnip'
+
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm { -- Select item from suggestions
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback) -- Use Tab to move down
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback) -- Use Shift-Tab to move up
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
