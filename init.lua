@@ -28,6 +28,9 @@ Plug('hrsh7th/nvim-cmp')                                        -- Autocompletio
 Plug('hrsh7th/cmp-nvim-lsp')                                    -- Use better autocompletion capabilities from LSP, when using nvim-cmp
 Plug('saadparwaiz1/cmp_luasnip')                                -- Snippet source for nvim-cmp
 Plug('L3MON4D3/LuaSnip')                                        -- Snippet engine
+Plug('ErichDonGubler/lsp_lines.nvim')                           -- Show diagnostics in better way
+Plug('nvim-tree/nvim-web-devicons')                             -- Icons for trouble.nvim
+Plug('folke/trouble.nvim')                                      -- Diagnostics window
 
 vim.call('plug#end')
 
@@ -143,10 +146,28 @@ for _, lsp in ipairs(servers) do
     }
 end
 
-map('n', '<space>e', vim.diagnostic.open_float)
-map('n', '[d', vim.diagnostic.goto_prev)
-map('n', ']d', vim.diagnostic.goto_next)
-map('n', '<space>q', vim.diagnostic.setloclist)
+map('n', 'sf', vim.diagnostic.open_float)                   -- Open diagnostics float window
+map('n', 'st', function() require("trouble").toggle() end)  -- Toggle diagnostics Trouble window
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    local opts = { buffer = ev.buf }
+    map('n', 'sc', vim.lsp.buf.declaration, opts)           -- GoTo Declaration
+    map('n', 'sd', vim.lsp.buf.definition, opts)            -- GoTo Definition
+    map('n', 'si', vim.lsp.buf.implementation, opts)        -- GoTo Implenentation
+    map('n', 'sh', vim.lsp.buf.hover, opts)                 -- Show Info about symbol
+    map('n', 'sn', vim.lsp.buf.rename, opts)                -- Rename all references to symbol
+    map('n', 'sr', vim.lsp.buf.references, opts)            -- Show all references to symbol
+  end,
+})
+
+require("lsp_lines").setup()
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = true,
+})
 
 -------------------------------------------------------------------------------
 ------------------------------- Autocomplete ----------------------------------
