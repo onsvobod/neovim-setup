@@ -14,7 +14,8 @@ ln -s init.lua ~/.config/nvim/init.lua
 #plugin manager install
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-sudo apt-get install ack-grep
+sudo apt-get install fd-find
+sudo apt-get install ripgrep
 
 sudo apt-get install nodejs
 

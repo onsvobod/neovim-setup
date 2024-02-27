@@ -29,8 +29,21 @@ Plug('hrsh7th/cmp-nvim-lsp')                                    -- Use better au
 Plug('saadparwaiz1/cmp_luasnip')                                -- Snippet source for nvim-cmp
 Plug('L3MON4D3/LuaSnip')                                        -- Snippet engine
 Plug('ErichDonGubler/lsp_lines.nvim')                           -- Show diagnostics in better way
-Plug('nvim-tree/nvim-web-devicons')                             -- Icons for trouble.nvim
+Plug('nvim-tree/nvim-web-devicons')                             -- Required by trouble.nvim and neo-tree and barbar
 Plug('folke/trouble.nvim')                                      -- Diagnostics window
+Plug('nvim-lua/plenary.nvim')                                   -- Required by neo-tree
+Plug('MunifTanjim/nui.nvim')                                    -- Required by neo-tree
+Plug('nvim-neo-tree/neo-tree.nvim', {['branch'] = 'v3.x'})      -- Filesystem browser
+Plug('nvim-lualine/lualine.nvim')                               -- Better status line
+Plug('lewis6991/gitsigns.nvim')                                 -- Required by barbar
+Plug('romgrk/barbar.nvim')                                      -- Better tabline
+Plug('lukas-reineke/indent-blankline.nvim')                     -- Show indent line
+Plug('windwp/nvim-autopairs')                                   -- Parenthesis completion
+Plug('nvim-lua/plenary.nvim')                                   -- Required by telescope
+Plug('nvim-telescope/telescope-fzf-native.nvim')                -- Required by telescope
+Plug('nvim-telescope/telescope.nvim')                           -- Telescope
+Plug('sindrets/diffview.nvim')                                  -- Show diff of files
+Plug('ahmedkhalf/project.nvim')                                 -- Projects manager
 
 vim.call('plug#end')
 
@@ -59,8 +72,6 @@ opt.smartindent = true      -- New line autoindent
 opt.expandtab = true        -- Spaces instead of tabs
 opt.list = true             -- Make whitespaces visible
 opt.listchars = 'tab:>-'    -- Set chars to make tabs visible
-g.indentLine_char = '|'     -- Show indent line (exclude nerd tree)
-g.indentLine_bufNameExclude = { 'NERD_tree.*' }
 
 -------------------------------------------------------------------------------
 ---------------------------------- Folding ------------------------------------
@@ -121,15 +132,13 @@ setTabWidth2('*.json')
 
 local map = vim.keymap.set
 
-g.mapleader = ','                                                           -- Set <leader>
-map('i', '<c-c>', '<ESC>')                                                  -- Ctrl-c -> Esc
-map('', '<c-t>h', ':tabp<Enter>')                                           -- Ctrl-t + h -> move tab left
-map('', '<c-t>l', ':tabn<Enter>')                                           -- Ctrl-t + l -> move tab right
-map('t', '<Esc>', "<C-\\><C-n>")                                            -- Esc -> escape :terminal
-map('n', '<F7>', ':AsyncRun -program=make<Enter>')                          -- F7 -> Run makeprg
-map('', '<C-n>', ':NERDTreeToggle<CR>')                                     -- Ctrl-n -> Open NerdTree
-map('n', '<c-G>', ':Grepper -tool grep -cword -noprompt<Enter>')            -- Ctrl-g -> Run Grepper on word under cursor
-map('n', '<F8>', ':GdbStart gdb -q<Enter>')                                 -- F8 -> Start gdb
+g.mapleader = ','                                                   -- Set <leader>
+map('i', '<c-c>', '<ESC>')                                          -- Ctrl-c -> Esc
+map('', '<c-t>h', ':tabp<Enter>')                                   -- Ctrl-t + h -> move tab left
+map('', '<c-t>l', ':tabn<Enter>')                                   -- Ctrl-t + l -> move tab right
+map('t', '<Esc>', "<C-\\><C-n>")                                    -- Esc -> escape :terminal
+map('n', '<F7>', ':AsyncRun -program=make<Enter>')                  -- F7 -> Run makeprg
+map('n', '<F8>', ':GdbStart gdb -q<Enter>')                         -- F8 -> Start gdb
 
 -------------------------------------------------------------------------------
 ------------------------------------ LSP --------------------------------------
@@ -211,4 +220,87 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+}
+
+-------------------------------------------------------------------------------
+---------------------------------- Neotree ------------------------------------
+-------------------------------------------------------------------------------
+
+map('', '<C-n>', ':Neotree toggle<CR>')    -- Ctrl-n -> Open NeoTree
+require('neo-tree').setup({
+    window = {
+        width = 32,
+    }
+})
+
+-------------------------------------------------------------------------------
+---------------------------------- LuaLine ------------------------------------
+-------------------------------------------------------------------------------
+
+require('lualine').setup({
+    sections = {
+        lualine_z = {}
+    },
+    extensions = {'neo-tree'}
+})
+
+-------------------------------------------------------------------------------
+----------------------------------- BarBar ------------------------------------
+-------------------------------------------------------------------------------
+
+require('barbar').setup({})
+
+-------------------------------------------------------------------------------
+------------------------------------ IBL --------------------------------------
+-------------------------------------------------------------------------------
+
+require('ibl').setup({})
+
+-------------------------------------------------------------------------------
+--------------------------------- AutoPair ------------------------------------
+-------------------------------------------------------------------------------
+
+require('nvim-autopairs').setup {}
+
+-------------------------------------------------------------------------------
+--------------------------------- Telescope -----------------------------------
+-------------------------------------------------------------------------------
+
+local telescope = require('telescope.builtin')
+require('telescope').load_extension('projects')
+map('n', 'ff', telescope.find_files, {})
+map('n', 'fg', telescope.live_grep, {})
+map('n', 'fp', ':Telescope projects<CR>')
+
+-------------------------------------------------------------------------------
+--------------------------------- Projects ------------------------------------
+-------------------------------------------------------------------------------
+require("project_nvim").setup {}
+
+-------------------------------------------------------------------------------
+-------------------------------- Treesitter -----------------------------------
+-------------------------------------------------------------------------------
+require('nvim-treesitter.configs').setup {
+    ensure_installed = "all",
+    -- Does not compile
+    ignore_install = { "smali" },
+    sync_install = false,
+    auto_install = true,
+    highlight = {
+        enable = true,
+        -- Dont use together with :syntax on
+        additional_vim_regex_highlighting = false,
+    },
+    --indent = {
+    --  enable = true
+    --},
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "<Enter>",
+            node_incremental = "<Enter>",
+            scope_incremental = "<TAB>",
+            node_decremental = "<S-TAB>",
+        },
+    },
 }
