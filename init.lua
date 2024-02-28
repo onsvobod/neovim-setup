@@ -147,7 +147,7 @@ map('n', '<F8>', ':GdbStart gdb -q<Enter>')                         -- F8 -> Sta
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lspconfig = require('lspconfig')
-local servers = {'clangd', 'gopls', 'bashls', 'cmake', 'dockerls', 'jsonls', 'pyright', 'yamlls'}
+local servers = {'clangd', 'gopls', 'bashls', 'cmake', 'dockerls', 'jsonls', 'pyright'}
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
         -- nvim-cmp capabilities
