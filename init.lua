@@ -274,12 +274,27 @@ require('nvim-autopairs').setup {}
 -------------------------------------------------------------------------------
 --------------------------------- Telescope -----------------------------------
 -------------------------------------------------------------------------------
-
-local telescope = require('telescope.builtin')
-require('telescope').load_extension('projects')
-map('n', 'ff', telescope.find_files, {})
-map('n', 'fg', telescope.live_grep, {})
+map('n', 'ff', require('telescope.builtin').find_files, {})
+map('n', 'fg', require('telescope.builtin').live_grep, {})
 map('n', 'fp', ':Telescope projects<CR>')
+
+require('telescope').setup{
+    extensions = {
+        'projects',
+    },
+    pickers = {
+        find_files = {
+            find_command = {
+                'fd',
+                '--type', 'f',
+                '--color=never',
+                '--hidden',
+                '--follow',
+                '-E', '.git/*'
+            },
+        },
+    }
+}
 
 -------------------------------------------------------------------------------
 --------------------------------- Projects ------------------------------------
