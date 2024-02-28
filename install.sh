@@ -17,12 +17,15 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 sudo apt-get install fd-find
 sudo apt-get install ripgrep
 
+# at least node version 18
 sudo apt-get install nodejs
 
 # install language servers
 sudo apt install clangd
 pip install cmake-language-server
 sudo npm i -g bash-language-server
+sudo apt install shellcheck
 sudo npm i -g dockerfile-language-server-nodejs
 sudo npm i -g vscode-langservers-extracted
 sudo npm i -g pyright
+sudo npm i -g yaml-language-server
