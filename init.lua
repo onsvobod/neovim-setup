@@ -155,6 +155,11 @@ for _, lsp in ipairs(servers) do
     }
 end
 
+-- Disable syntax highlight from lsp. This is Treesitters job
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  vim.api.nvim_set_hl(0, group, {})
+end
+
 map('n', 'sf', vim.diagnostic.open_float)                   -- Open diagnostics float window
 map('n', 'st', function() require("trouble").toggle() end)  -- Toggle diagnostics Trouble window
 
@@ -254,7 +259,11 @@ require('barbar').setup({})
 ------------------------------------ IBL --------------------------------------
 -------------------------------------------------------------------------------
 
-require('ibl').setup({})
+require('ibl').setup({
+    scope = {
+        enabled = false,
+    }
+})
 
 -------------------------------------------------------------------------------
 --------------------------------- AutoPair ------------------------------------
@@ -281,9 +290,12 @@ require("project_nvim").setup {}
 -------------------------------- Treesitter -----------------------------------
 -------------------------------------------------------------------------------
 require('nvim-treesitter.configs').setup {
-    ensure_installed = "all",
-    -- Does not compile
-    ignore_install = { "smali" },
+    ensure_installed = {'asm', 'bash', 'c', 'cmake', 'cpp', 'css', 'csv',
+                        'cuda', 'dockerfile', 'doxygen', 'gn', 'go', 'gomod',
+                        'gosum', 'haskell', 'html', 'http', 'javascript',
+                        'json', 'llvm', 'lua', 'make', 'markdown', 'ninja',
+                        'proto', 'python', 'scss', 'sql', 'ssh_config', 'tmux',
+                        'tsv', 'typescript', 'vim', 'vimdoc', 'xml', 'yaml'},
     sync_install = false,
     auto_install = true,
     highlight = {
