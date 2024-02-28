@@ -26,3 +26,4 @@ sudo npm i -g bash-language-server
 sudo npm i -g dockerfile-language-server-nodejs
 sudo npm i -g vscode-langservers-extracted
 sudo npm i -g pyright
+sudo npm i -g yaml-language-server
