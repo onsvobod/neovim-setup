@@ -29,21 +29,18 @@ Plug('hrsh7th/cmp-nvim-lsp')                                    -- Use better au
 Plug('saadparwaiz1/cmp_luasnip')                                -- Snippet source for nvim-cmp
 Plug('L3MON4D3/LuaSnip')                                        -- Snippet engine
 Plug('ErichDonGubler/lsp_lines.nvim')                           -- Show diagnostics in better way
-Plug('nvim-tree/nvim-web-devicons')                             -- Required by trouble.nvim and neo-tree and barbar
+Plug('nvim-tree/nvim-web-devicons')                             -- Required by trouble.nvim and neo-tree
 Plug('folke/trouble.nvim')                                      -- Diagnostics window
 Plug('nvim-lua/plenary.nvim')                                   -- Required by neo-tree
 Plug('MunifTanjim/nui.nvim')                                    -- Required by neo-tree
 Plug('nvim-neo-tree/neo-tree.nvim', {['branch'] = 'v3.x'})      -- Filesystem browser
 Plug('nvim-lualine/lualine.nvim')                               -- Better status line
-Plug('lewis6991/gitsigns.nvim')                                 -- Required by barbar
-Plug('romgrk/barbar.nvim')                                      -- Better tabline
 Plug('lukas-reineke/indent-blankline.nvim')                     -- Show indent line
 Plug('windwp/nvim-autopairs')                                   -- Parenthesis completion
 Plug('nvim-lua/plenary.nvim')                                   -- Required by telescope
 Plug('nvim-telescope/telescope-fzf-native.nvim')                -- Required by telescope
 Plug('nvim-telescope/telescope.nvim')                           -- Telescope
-Plug('sindrets/diffview.nvim')                                  -- Show diff of files
-Plug('ahmedkhalf/project.nvim')                                 -- Projects manager
+Plug('sindrets/diffview.nvim')                                  -- Show diff of file
 
 vim.call('plug#end')
 
@@ -250,12 +247,6 @@ require('lualine').setup({
 })
 
 -------------------------------------------------------------------------------
------------------------------------ BarBar ------------------------------------
--------------------------------------------------------------------------------
-
-require('barbar').setup({})
-
--------------------------------------------------------------------------------
 ------------------------------------ IBL --------------------------------------
 -------------------------------------------------------------------------------
 
@@ -264,6 +255,7 @@ require('ibl').setup({
         enabled = false,
     }
 })
+
 
 -------------------------------------------------------------------------------
 --------------------------------- AutoPair ------------------------------------
@@ -274,13 +266,13 @@ require('nvim-autopairs').setup {}
 -------------------------------------------------------------------------------
 --------------------------------- Telescope -----------------------------------
 -------------------------------------------------------------------------------
-map('n', 'ff', require('telescope.builtin').find_files, {})
-map('n', 'fg', require('telescope.builtin').live_grep, {})
-map('n', 'fp', ':Telescope projects<CR>')
+
+map('n', 'tf', require('telescope.builtin').find_files, {})
+map('n', 'tg', require('telescope.builtin').live_grep, {})
+map('n', 'tw', ':Telescope workspaces<CR>')
 
 require('telescope').setup{
     extensions = {
-        'projects',
     },
     pickers = {
         find_files = {
@@ -296,14 +288,18 @@ require('telescope').setup{
     }
 }
 
--------------------------------------------------------------------------------
---------------------------------- Projects ------------------------------------
--------------------------------------------------------------------------------
-require("project_nvim").setup {}
+vim.api.nvim_create_autocmd('VimEnter', {
+    callback = function()
+        if vim.fn.argv(0) == '' then
+            require('telescope.builtin').find_files()
+        end
+    end,
+})
 
 -------------------------------------------------------------------------------
 -------------------------------- Treesitter -----------------------------------
 -------------------------------------------------------------------------------
+
 require('nvim-treesitter.configs').setup {
     ensure_installed = {'asm', 'bash', 'c', 'cmake', 'cpp', 'css', 'csv',
                         'cuda', 'dockerfile', 'doxygen', 'gn', 'go', 'gomod',
