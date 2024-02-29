@@ -41,7 +41,6 @@ Plug('nvim-lua/plenary.nvim')                                   -- Required by t
 Plug('nvim-telescope/telescope-fzf-native.nvim')                -- Required by telescope
 Plug('nvim-telescope/telescope.nvim')                           -- Telescope
 Plug('sindrets/diffview.nvim')                                  -- Show diff of file
-Plug('eoh-bse/minintro.nvim')                                   -- Welcome screen
 
 vim.call('plug#end')
 
@@ -263,12 +262,6 @@ require('ibl').setup({
 -------------------------------------------------------------------------------
 
 require('nvim-autopairs').setup {}
-
--------------------------------------------------------------------------------
------------------------------- Welcome Screen ---------------------------------
--------------------------------------------------------------------------------
-
-require('minintro').setup {}
 
 -------------------------------------------------------------------------------
 --------------------------------- Telescope -----------------------------------
