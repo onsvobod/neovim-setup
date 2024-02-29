@@ -41,6 +41,7 @@ Plug('nvim-lua/plenary.nvim')                                   -- Required by t
 Plug('nvim-telescope/telescope-fzf-native.nvim')                -- Required by telescope
 Plug('nvim-telescope/telescope.nvim')                           -- Telescope
 Plug('sindrets/diffview.nvim')                                  -- Show diff of file
+Plug('eoh-bse/minintro.nvim')                                   -- Welcome screen
 
 vim.call('plug#end')
 
@@ -264,6 +265,12 @@ require('ibl').setup({
 require('nvim-autopairs').setup {}
 
 -------------------------------------------------------------------------------
+------------------------------ Welcome Screen ---------------------------------
+-------------------------------------------------------------------------------
+
+require('minintro').setup {}
+
+-------------------------------------------------------------------------------
 --------------------------------- Telescope -----------------------------------
 -------------------------------------------------------------------------------
 
@@ -277,7 +284,7 @@ require('telescope').setup{
     pickers = {
         find_files = {
             find_command = {
-                'fd',
+                'fdfind',
                 '--type', 'f',
                 '--color=never',
                 '--hidden',
@@ -287,14 +294,6 @@ require('telescope').setup{
         },
     }
 }
-
-vim.api.nvim_create_autocmd('VimEnter', {
-    callback = function()
-        if vim.fn.argv(0) == '' then
-            require('telescope.builtin').find_files()
-        end
-    end,
-})
 
 -------------------------------------------------------------------------------
 -------------------------------- Treesitter -----------------------------------
