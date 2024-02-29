@@ -297,8 +297,8 @@ require('nvim-treesitter.configs').setup {
                         'cuda', 'dockerfile', 'doxygen', 'gn', 'go', 'gomod',
                         'gosum', 'haskell', 'html', 'http', 'javascript',
                         'json', 'llvm', 'lua', 'make', 'markdown', 'ninja',
-                        'proto', 'python', 'scss', 'sql', 'ssh_config', 'tmux',
-                        'tsv', 'typescript', 'vim', 'vimdoc', 'xml', 'yaml'},
+                        'proto', 'python', 'scss', 'sql', 'ssh_config', 'tsv',
+                        'typescript', 'vim', 'vimdoc', 'xml', 'yaml'},
     sync_install = false,
     auto_install = true,
     highlight = {
