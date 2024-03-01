@@ -26,6 +26,8 @@ Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- Smart indenta
 Plug('neovim/nvim-lspconfig')                                   -- LSP client configurations
 Plug('hrsh7th/nvim-cmp')                                        -- Autocompletion
 Plug('hrsh7th/cmp-nvim-lsp')                                    -- Use better autocompletion capabilities from LSP, when using nvim-cmp
+Plug('hrsh7th/cmp-buffer')                                      -- Buffer source for autocompletion
+Plug('hrsh7th/cmp-path')                                        -- Path source for autocompletion
 Plug('saadparwaiz1/cmp_luasnip')                                -- Snippet source for nvim-cmp
 Plug('L3MON4D3/LuaSnip')                                        -- Snippet engine
 Plug('ErichDonGubler/lsp_lines.nvim')                           -- Show diagnostics in better way
@@ -221,6 +223,8 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'buffer' },
+    { name = 'path' },
   },
 }
 
