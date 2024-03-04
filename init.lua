@@ -252,6 +252,13 @@ require('lualine').setup({
         },
         lualine_z = {}
     },
+    inactive_sections = {
+        lualine_c = {
+            {
+                'filename', path = 1, newfile_status = true
+            }
+        },
+    },
     extensions = {'neo-tree'},
     options = {
         theme = 'gruvbox'
