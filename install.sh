@@ -28,4 +28,5 @@ sudo apt install shellcheck
 sudo npm i -g dockerfile-language-server-nodejs
 sudo npm i -g vscode-langservers-extracted
 sudo npm i -g pyright
+pip install pylint
 sudo npm i -g yaml-language-server

@@ -43,6 +43,7 @@ Plug('nvim-lua/plenary.nvim')                                   -- Required by t
 Plug('nvim-telescope/telescope-fzf-native.nvim')                -- Required by telescope
 Plug('nvim-telescope/telescope.nvim')                           -- Telescope
 Plug('sindrets/diffview.nvim')                                  -- Show diff of file
+Plug('mfussenegger/nvim-lint')                                  -- Linting
 
 vim.call('plug#end')
 
@@ -88,7 +89,7 @@ local setColorColumn = function(filetype)
     vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
         pattern = filetype,
         callback = function()
-            vim.opt_local.colorcolumn = '120'
+            vim.opt_local.colorcolumn = '80'
         end
     })
 end
@@ -180,6 +181,21 @@ require("lsp_lines").setup()
 vim.diagnostic.config({
   virtual_text = false,
   virtual_lines = true,
+})
+
+-------------------------------------------------------------------------------
+---------------------------------- Linting ------------------------------------
+-------------------------------------------------------------------------------
+
+require('lint').linters_by_ft = {
+    python = {'pylint',}
+}
+
+-- Trigger lint after leaving insert mode
+vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost' }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
 })
 
 -------------------------------------------------------------------------------
