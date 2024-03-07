@@ -266,7 +266,6 @@ require('lualine').setup({
                 'filename', path = 1, newfile_status = true
             }
         },
-        lualine_z = {}
     },
     inactive_sections = {
         lualine_c = {
