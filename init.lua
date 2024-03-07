@@ -89,7 +89,7 @@ local setColorColumn = function(filetype)
     vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
         pattern = filetype,
         callback = function()
-            vim.opt_local.colorcolumn = '80'
+            vim.opt_local.colorcolumn = '81'
         end
     })
 end
