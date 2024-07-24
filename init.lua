@@ -303,7 +303,8 @@ require('nvim-autopairs').setup {}
 
 map('n', 'tf', require('telescope.builtin').find_files, {})
 map('n', 'tg', require('telescope.builtin').live_grep, {})
-map('n', 'tr', ':Telescope grep_string<CR>')
+map('n', 'tr', ':Telescope resume<CR>')
+map('n', 'ts', ':Telescope grep_string<CR>')
 
 require('telescope').setup{
     extensions = {
