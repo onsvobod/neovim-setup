@@ -30,7 +30,6 @@ Plug('hrsh7th/cmp-buffer')                                      -- Buffer source
 Plug('hrsh7th/cmp-path')                                        -- Path source for autocompletion
 Plug('saadparwaiz1/cmp_luasnip')                                -- Snippet source for nvim-cmp
 Plug('L3MON4D3/LuaSnip')                                        -- Snippet engine
-Plug('ErichDonGubler/lsp_lines.nvim')                           -- Show diagnostics in better way
 Plug('nvim-tree/nvim-web-devicons')                             -- Required by trouble.nvim and neo-tree
 Plug('folke/trouble.nvim')                                      -- Diagnostics window
 Plug('nvim-lua/plenary.nvim')                                   -- Required by neo-tree
@@ -176,11 +175,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require("lsp_lines").setup()
+-- Open diag window after on cursor after a while
+vim.o.updatetime = 250
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+  group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
+  callback = function ()
+    vim.diagnostic.open_float(nil, {focus=false})
+  end
+})
 
+-- Disable virtualtext
 vim.diagnostic.config({
   virtual_text = false,
-  virtual_lines = true,
 })
 
 -------------------------------------------------------------------------------
