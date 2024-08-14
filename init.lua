@@ -283,7 +283,7 @@ cmp.setup {
 -------------------------------------------------------------------------------
 
 map('', '<C-n>', ':Neotree toggle<CR>')             -- Ctrl-n -> Open NeoTree
-map('', '<C-m>', ':Neotree position=current<CR>')   -- Ctrl-m -> Open fullscreen NeoTree
+map('', '<M-n>', ':Neotree position=float<CR>')   -- Ctrl-m -> Open fullscreen NeoTree
 
 require('neo-tree').setup({
     window = {
