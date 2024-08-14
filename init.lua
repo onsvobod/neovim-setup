@@ -61,9 +61,9 @@ opt.splitbelow = true           -- Move horizontal split to the bottom
 opt.splitright = true           -- Move vertical split to the right
 vim.cmd('colorscheme gruvbox')  -- Choose colorscheme
 
-vim.api.nvim_set_hl(0, 'NormalFloat', { link = "GruvboxBg4" })
+vim.api.nvim_set_hl(0, 'GruvboxWhiteSign', { ctermfg=223, ctermbg=237, fg="#ebdbb2", bg="#3c3836" })
+vim.api.nvim_set_hl(0, 'NormalFloat', { link = "GruvboxWhiteSign" })
 vim.api.nvim_set_hl(0, 'DiagnosticError', { link = "GruvboxRedSign" })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingError', { link = "GruvboxRed" })
 vim.api.nvim_set_hl(0, 'diagnosticwarn', { link = "gruvboxyellowsign" })
 vim.api.nvim_set_hl(0, 'diagnosticinfo', { link = "gruvboxpurplesign" })
 vim.api.nvim_set_hl(0, 'diagnostichint', { link = "gruvboxbluesign" })
