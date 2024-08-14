@@ -61,6 +61,14 @@ opt.splitbelow = true           -- Move horizontal split to the bottom
 opt.splitright = true           -- Move vertical split to the right
 vim.cmd('colorscheme gruvbox')  -- Choose colorscheme
 
+vim.api.nvim_set_hl(0, 'NormalFloat', { link = "GruvboxBg4" })
+vim.api.nvim_set_hl(0, 'DiagnosticError', { link = "GruvboxRedSign" })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingError', { link = "GruvboxRed" })
+vim.api.nvim_set_hl(0, 'diagnosticwarn', { link = "gruvboxyellowsign" })
+vim.api.nvim_set_hl(0, 'diagnosticinfo', { link = "gruvboxpurplesign" })
+vim.api.nvim_set_hl(0, 'diagnostichint', { link = "gruvboxbluesign" })
+vim.api.nvim_set_hl(0, 'diagnosticok', { link = "gruvboxgreensign" })
+
 -------------------------------------------------------------------------------
 -------------------------------- Indentation ----------------------------------
 -------------------------------------------------------------------------------
@@ -184,10 +192,30 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
   end
 })
 
--- Disable virtualtext
-vim.diagnostic.config({
+-------------------------------------------------------------------------------
+-------------------------------- Diagnostics ----------------------------------
+-------------------------------------------------------------------------------
+
+vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInfo", {text = " ", texthl = "DiagnosticSignInfo"})
+vim.fn.sign_define("DiagnosticSignHint", {text = "󰌵", texthl = "DiagnosticSignHint"})
+
+vim.diagnostic.config {
   virtual_text = false,
-})
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.INFO] = " ",
+      [vim.diagnostic.severity.HINT] = "󰌵",
+    },
+  },
+  float = {
+      header = false,
+      border = 'rounded'
+  }
+}
 
 -------------------------------------------------------------------------------
 ---------------------------------- Linting ------------------------------------
@@ -254,7 +282,9 @@ cmp.setup {
 ---------------------------------- Neotree ------------------------------------
 -------------------------------------------------------------------------------
 
-map('', '<C-n>', ':Neotree toggle<CR>')    -- Ctrl-n -> Open NeoTree
+map('', '<C-n>', ':Neotree toggle<CR>')             -- Ctrl-n -> Open NeoTree
+map('', '<C-m>', ':Neotree position=current<CR>')   -- Ctrl-m -> Open fullscreen NeoTree
+
 require('neo-tree').setup({
     window = {
         width = 32,
