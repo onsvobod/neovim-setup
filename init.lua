@@ -167,8 +167,8 @@ for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
   vim.api.nvim_set_hl(0, group, {})
 end
 
-map('n', 'sf', vim.diagnostic.open_float)                   -- Open diagnostics float window
-map('n', 'st', function() require("trouble").toggle() end)  -- Toggle diagnostics Trouble window
+map('n', 'sf', vim.diagnostic.open_float)                                   -- Open diagnostics float window
+map('n', 'st', function() require("trouble").toggle("diagnostics") end)     -- Toggle diagnostics Trouble window
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
