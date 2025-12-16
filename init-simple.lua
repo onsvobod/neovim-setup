@@ -45,7 +45,7 @@ opt.ignorecase = true           -- Ignore case of letters during search
 opt.smartcase = true            -- Ignore case of letters in patterns with only lowercase letters
 opt.splitbelow = true           -- Move horizontal split to the bottom
 opt.splitright = true           -- Move vertical split to the right
-vim.cmd('colorscheme gruvbox')  -- Choose colorscheme
+vim.cmd('colorscheme torte')  -- Choose colorscheme
 
 vim.api.nvim_set_hl(0, 'GruvboxWhiteSign', { ctermfg=223, ctermbg=237, fg="#ebdbb2", bg="#3c3836" })
 vim.api.nvim_set_hl(0, 'NormalFloat', { link = "GruvboxWhiteSign" })
